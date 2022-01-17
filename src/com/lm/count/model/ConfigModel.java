@@ -4,7 +4,7 @@ package com.lm.count.model;
  * 配置模型类
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public class ConfigModel {
     private String checkType;
