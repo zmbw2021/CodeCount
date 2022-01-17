@@ -12,7 +12,7 @@ import java.util.List;
  * 文件工具类
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public class FileUtils {
     /**
@@ -28,7 +28,10 @@ public class FileUtils {
         }
         List<String> allFilePath = new ArrayList<>();
         String[] list = file.list();
-        Arrays.stream(list).map(FileUtils::getAllSubFilePath).forEach(allFilePath::addAll);
+        for (String tenantId : list) {
+            List<String> allSubFilePath = getAllSubFilePath(parentPath + File.separator + tenantId);
+            allFilePath.addAll(allSubFilePath);
+        }
         return allFilePath;
     }
 
@@ -45,6 +48,17 @@ public class FileUtils {
             fileSuffix = filename.substring(filename.lastIndexOf(CountConstants.DOT) + 1);
         }
         return fileSuffix;
+    }
+
+    /**
+     * 判断目标文件后缀是否在支持的后缀列表中
+     *
+     * @param supportedFileSuffix 支持的后缀列表
+     * @param targetSuffix 目标后缀
+     * @return 是否支持
+     */
+    public static boolean containsFileSuffix(String[] supportedFileSuffix, String targetSuffix) {
+        return Arrays.stream(supportedFileSuffix).filter(suffix -> suffix.endsWith(targetSuffix)).count() > 0;
     }
 
     /**
