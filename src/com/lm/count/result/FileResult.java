@@ -6,7 +6,7 @@ import java.util.Locale;
  * 单个文件检测结果
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public class FileResult extends BaseResult {
     private String fullFileName;
