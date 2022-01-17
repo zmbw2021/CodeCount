@@ -4,7 +4,7 @@ package com.lm.count.constants;
  * 常量类
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public final class CountConstants {
     private CountConstants() {
@@ -14,6 +14,11 @@ public final class CountConstants {
      * 文件分割符
      */
     public static final String DOT = ".";
+
+    /**
+     * 后缀分割符
+     */
+    public static final String SEMICOLON = ";";
 
     /**
      * 单行注释符
