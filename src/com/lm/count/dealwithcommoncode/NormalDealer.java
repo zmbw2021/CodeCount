@@ -6,7 +6,7 @@ import com.lm.count.result.CountResultOfLine;
  * 处理正常情况
  *
  * @author limin
- * @date 2021/12/30
+ * @since 2021-12-30
  */
 public class NormalDealer extends CommonCodeDealer {
     @Override
