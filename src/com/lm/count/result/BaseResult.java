@@ -4,7 +4,7 @@ package com.lm.count.result;
  * 基本结果类型
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public class BaseResult {
     private long sumLine;
