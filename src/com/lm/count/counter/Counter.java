@@ -8,7 +8,7 @@ import java.io.File;
  * 代码量检测接口
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public interface Counter {
     /**
