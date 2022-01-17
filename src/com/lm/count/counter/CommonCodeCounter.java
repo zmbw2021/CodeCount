@@ -19,29 +19,19 @@ import java.io.IOException;
  * Java、JavaScript等通用代码量统计
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public class CommonCodeCounter implements Counter {
     @Override
     public FileResult count(File file) {
-        CommonCodeDealer spaceDealer = new SpaceDealer();
-        SingleLineCommentDealer singleLineCommentDealer = new SingleLineCommentDealer();
-        WithInMultiCommentsDealer withInMultiCommentsDealer = new WithInMultiCommentsDealer();
-        StartWithMultiCommentsDealer startWithMultiCommentsDealer = new StartWithMultiCommentsDealer();
-        ContainsWithMultiCommentsDealer containsWithMultiCommentsDealer = new ContainsWithMultiCommentsDealer();
-        NormalDealer normalDealer = new NormalDealer();
-        spaceDealer.setNext(singleLineCommentDealer).setNext(withInMultiCommentsDealer)
-                .setNext(startWithMultiCommentsDealer).setNext(containsWithMultiCommentsDealer).setNext(normalDealer);
-
+        CommonCodeDealer spaceDealer = constructProcessChain();
         int sumLine = 0;
         int codeLine = 0;
         int commentLine = 0;
         int spaceLine = 0;
-        BufferedReader reader = null;
-        String line = null;
         boolean isMultiComment = false;
-        try {
-            reader = new BufferedReader(new FileReader(file));
+        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
             while ((line = reader.readLine()) != null) {
                 sumLine++;
                 CountResultOfLine countResult = spaceDealer.processChain(line.trim(), isMultiComment);
@@ -56,16 +46,11 @@ public class CommonCodeCounter implements Counter {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) {
-                    reader.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
+        return getFileResult(file, sumLine, codeLine, commentLine, spaceLine);
+    }
 
+    private FileResult getFileResult(File file, int sumLine, int codeLine, int commentLine, int spaceLine) {
         FileResult fileResult = new FileResult();
         try {
             fileResult.setFullFileName(file.getCanonicalPath());
@@ -77,5 +62,17 @@ public class CommonCodeCounter implements Counter {
         fileResult.setCommentLine(commentLine);
         fileResult.setSpaceLine(spaceLine);
         return fileResult;
+    }
+
+    private CommonCodeDealer constructProcessChain() {
+        CommonCodeDealer spaceDealer = new SpaceDealer();
+        SingleLineCommentDealer singleLineCommentDealer = new SingleLineCommentDealer();
+        WithInMultiCommentsDealer withInMultiCommentsDealer = new WithInMultiCommentsDealer();
+        StartWithMultiCommentsDealer startWithMultiCommentsDealer = new StartWithMultiCommentsDealer();
+        ContainsWithMultiCommentsDealer containsWithMultiCommentsDealer = new ContainsWithMultiCommentsDealer();
+        NormalDealer normalDealer = new NormalDealer();
+        spaceDealer.setNext(singleLineCommentDealer).setNext(withInMultiCommentsDealer)
+                .setNext(startWithMultiCommentsDealer).setNext(containsWithMultiCommentsDealer).setNext(normalDealer);
+        return spaceDealer;
     }
 }
