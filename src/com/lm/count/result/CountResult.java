@@ -8,7 +8,7 @@ import java.util.Locale;
  * 整体检测结果
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public class CountResult extends BaseResult {
     private List<FileResult> fileResultList;
@@ -24,6 +24,10 @@ public class CountResult extends BaseResult {
      */
     public void addFileResult(FileResult fileResult) {
         fileResultList.add(fileResult);
+    }
+
+    public List<FileResult> getFileResultList() {
+        return fileResultList;
     }
 
     /**
