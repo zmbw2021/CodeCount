@@ -4,7 +4,7 @@ package com.lm.count.result;
  * 单行代码计算结果
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public class CountResultOfLine {
     /**
