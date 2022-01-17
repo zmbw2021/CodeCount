@@ -6,7 +6,7 @@ import com.lm.count.result.CountResultOfLine;
  * 处理通用代码的抽象方法，责任链模式
  *
  * @author limin
- * @date 2021/12/28
+ * @since 2021-12-28
  */
 public abstract class CommonCodeDealer {
     private CommonCodeDealer nextDealer;
