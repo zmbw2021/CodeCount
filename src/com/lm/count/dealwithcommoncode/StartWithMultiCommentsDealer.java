@@ -7,7 +7,7 @@ import com.lm.count.result.CountResultOfLine;
  * 处理以多行注释开头的场景
  *
  * @author limin
- * @date 2021/12/30
+ * @since 2021-12-30
  */
 public class StartWithMultiCommentsDealer extends CommonCodeDealer {
     @Override
