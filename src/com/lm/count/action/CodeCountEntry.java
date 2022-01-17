@@ -17,10 +17,10 @@ import com.lm.count.model.ConfigModel;
  * 代码量统计主程序
  *
  * @author limin
- * @date 2021-12-20
+ * @since 2021-12-20
  */
 public class CodeCountEntry extends AnAction {
-    private static final String DEFAULT_SUFFIX = "*.java;*.txt";
+    private static final String DEFAULT_SUFFIX = "*.java;*.javascript;*.c;*.cpp;*.h";
 
     @Override
     public void actionPerformed(AnActionEvent e) {
