@@ -9,6 +9,9 @@ import com.lm.count.result.CountResult;
 import com.lm.count.result.FileResult;
 import com.lm.count.utils.FileUtils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +23,8 @@ import java.util.Objects;
  * @since 2021-12-30
  */
 public class Entry {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Entry.class);
+
     private ConfigModel model;
 
     public Entry(ConfigModel model) {
@@ -29,10 +34,9 @@ public class Entry {
     public CountResult codeCountCalculate() {
         String filePath = model.getCheckPath();
         try {
-            // todo 需要修改异常处理方式
             FileUtils.checkFilePath(filePath);
         } catch (CountCodeException e) {
-            System.out.println("发生错误：" + e.getLocalizedMessage());
+            LOGGER.error("发生错误：" + e.getLocalizedMessage());
             return null;
         }
         long startTime = System.currentTimeMillis();
@@ -40,7 +44,7 @@ public class Entry {
         CountResult countResult = countFiles(allSubFilePath);
         countResult.print();
         long endTime = System.currentTimeMillis();
-        System.out.println("执行完成，用时：" + (endTime - startTime) + "ms");
+        LOGGER.info("执行完成，用时：" + (endTime - startTime) + "ms");
         return countResult;
     }
 
@@ -61,7 +65,7 @@ public class Entry {
         String[] supportedFileSuffix = checkType.split(CountConstants.SEMICOLON);
         File file = new File(filePath);
         if (!FileUtils.containsFileSuffix(supportedFileSuffix, FileUtils.getFileSuffix(file))) {
-            System.out.println("当前暂不支持不在此后缀列表(" + checkType + ")中的文件，文件名：" + filePath + "，忽略该文件");
+            LOGGER.warn("当前暂不支持不在此后缀列表(" + checkType + ")中的文件，文件名：" + filePath + "，忽略该文件");
             return null;
         }
         Counter counter = new CommonCodeCounter();

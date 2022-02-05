@@ -2,6 +2,9 @@ package com.lm.count.dealwithcommoncode;
 
 import com.lm.count.result.CountResultOfLine;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 处理通用代码的抽象方法，责任链模式
  *
@@ -9,6 +12,8 @@ import com.lm.count.result.CountResultOfLine;
  * @since 2021-12-28
  */
 public abstract class CommonCodeDealer {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommonCodeDealer.class);
+
     private CommonCodeDealer nextDealer;
 
     public CommonCodeDealer() {
@@ -48,7 +53,7 @@ public abstract class CommonCodeDealer {
      * 处理失败场景
      */
     protected void processFailed() {
-        System.out.println("java code process failed.");
+        LOGGER.error("java code process failed.");
     }
 
     /**

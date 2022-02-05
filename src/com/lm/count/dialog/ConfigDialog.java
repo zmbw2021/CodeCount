@@ -9,7 +9,6 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.ContentManager;
 
-import com.lm.count.utils.UiConstants;
 import org.jetbrains.annotations.Nullable;
 
 import com.lm.count.model.DataCenter;
@@ -17,6 +16,10 @@ import com.lm.count.Entry;
 import com.lm.count.model.ConfigModel;
 import com.lm.count.result.FileResult;
 import com.lm.count.result.CountResult;
+import com.lm.count.utils.UiConstants;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -38,6 +41,8 @@ import java.util.List;
  * @since 2021-12-20
  */
 public class ConfigDialog extends DialogWrapper {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConfigDialog.class);
+
     private ConfigModel model;
     private Project project;
     private Entry entry;
@@ -69,6 +74,7 @@ public class ConfigDialog extends DialogWrapper {
             if (virtualFile != null) {
                 String path = virtualFile.getPath();
                 checkPathTextField.setText(path);
+                model.setCheckPath(path);
             }
         });
         checkPathPanel.add(checkPathButton);
@@ -92,12 +98,13 @@ public class ConfigDialog extends DialogWrapper {
         startButton.addActionListener(event -> {
             // 调用前清空历史数据
             DataCenter.clear();
-            // todo 处理日志
             // 点击start按钮，执行代码量统计
-            System.out.println("执行Code Count...");
+            LOGGER.info("执行Code Count...");
             CountResult countResult = entry.codeCountCalculate();
-            // 处理返回结果，在ToolWindow中展示
-            showToolWindow(countResult);
+            if (countResult != null) {
+                // 处理返回结果，在ToolWindow中展示
+                showToolWindow(countResult);
+            }
             // 退出对话框
             this.close(DialogWrapper.CANCEL_EXIT_CODE);
         });
@@ -126,7 +133,8 @@ public class ConfigDialog extends DialogWrapper {
         }
         ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow("CodeCount");
         // 展示窗口，同时会自动注册监听器到defaultTableModel中
-        toolWindow.show();
+        // TODO 升级到java11
+        toolWindow.show(() -> {});
 
         UiConstants.setTableColumnSize((JTable) defaultTableModel.getTableModelListeners()[0]);
         // 设置统计信息

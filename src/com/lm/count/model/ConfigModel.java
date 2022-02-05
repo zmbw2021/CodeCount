@@ -22,4 +22,8 @@ public class ConfigModel {
     public String getCheckPath() {
         return checkPath;
     }
+
+    public void setCheckPath(String checkPath) {
+        this.checkPath = checkPath;
+    }
 }
